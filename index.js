@@ -5,7 +5,7 @@ const MongoClient = require('mongodb').MongoClient
 const bodyParser = require('body-parser')
 
 // Connection URL
-const url = 'mongodb+srv://admin01:admin01@demo-cluster-0qetk.gcp.mongodb.net/test?retryWrites=true'
+const url = process.env.MONGO_URL
 
 // Create a new MongoClient
 const client = new MongoClient(url)
@@ -104,7 +104,7 @@ app.get('/article', function (req, res) {
 
 
 app.get('/', function (req, res) {
-  res.send('Hello World yyyyyy ...')
+  res.send('Hello World yyyyyy ... xxxxxxx')
 })
 
 app.get('/article', (req, res) => {
