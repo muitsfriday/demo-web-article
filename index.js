@@ -16,20 +16,22 @@ const dbName = 'article'
 let articleCollection = null
 
 // Use connect method to connect to the Server
-client.connect(function(err) {
+const connectMongo = () => {
+    client.connect(function(err) {
+
+    if(err){
+        console.log('connect fail', err)
+        setTimeout(connectMongo, 5000)
+        return
+    }
+    console.log("Connected successfully to server");
     
-  if(err){
-      console.log('connect fail', err)
-      return
-  }
-  console.log("Connected successfully to server");
-
-  const db = client.db(dbName);
-  // Get the documents collection
-  articleCollection = db.collection('article'); // collection = table
-   
-});
-
+    const db = client.db(dbName)
+    // Get the documents collection
+    articleCollection = db.collection('article') // collection = table
+        
+    })
+}
 
 
 const _error = message => {
@@ -47,8 +49,6 @@ app.use(bodyParser.json());
 
 //support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
 
 app.post('/article', (req, res) => {
     if(typeof req.body.title === 'undefined'){
@@ -112,4 +112,6 @@ app.get('/article', (req, res) => {
 })
 
 
-app.listen(3000)
+setTimeout(connectMongo, 5000)
+
+app.listen(process.env.PORT || 3000)
